@@ -1,0 +1,1611 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初中英语学习助手（人教版）— 七年級~九年級词汇与语法</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f0f4f8; color: #333; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+
+  header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 30px 20px; text-align: center; border-radius: 12px; margin-bottom: 24px; }
+  header h1 { font-size: 2em; margin-bottom: 6px; }
+  header p { opacity: .9; font-size: 1.05em; }
+
+  nav { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  nav button { flex: 1; min-width: 100px; padding: 12px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: .95em; font-weight: 600; background: #fff; color: #555; box-shadow: 0 2px 6px rgba(0,0,0,.08); transition: all .2s; }
+  nav button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  nav button.active { background: #667eea; color: #fff; }
+
+  .panel { display: none; background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 24px; }
+  .panel.active { display: block; }
+
+  h2 { color: #4a5568; margin-bottom: 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+  h3 { color: #5a67d8; margin: 16px 0 8px; }
+
+  .card { background: #f7fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #667eea; }
+  .card.hot { border-left-color: #e53e3e; }
+  .card h4 { margin-bottom: 4px; color: #2d3748; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  th { background: #edf2f7; font-weight: 600; color: #4a5568; }
+
+  .vocab-word { font-weight: 700; color: #5a67d8; cursor: pointer; }
+  .vocab-word:hover { text-decoration: underline; }
+
+  .quiz-box { background: #f7fafc; border-radius: 10px; padding: 20px; margin: 16px 0; }
+  .question { font-size: 1.1em; margin-bottom: 12px; font-weight: 500; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 500px) { .options { grid-template-columns: 1fr; } }
+  .option { padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; text-align: center; transition: all .2s; background: #fff; }
+  .option:hover { border-color: #667eea; background: #eef0ff; }
+  .option.correct { border-color: #48bb78; background: #c6f6d5; }
+  .option.wrong { border-color: #fc8181; background: #fff5f5; }
+  .option.dim { opacity: .4; }
+
+  .btn { padding: 10px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: .95em; font-weight: 600; transition: all .2s; }
+  .btn-primary { background: #667eea; color: #fff; }
+  .btn-primary:hover { background: #5a67d8; }
+  .btn-outline { background: #fff; color: #667eea; border: 2px solid #667eea; }
+  .btn-outline:hover { background: #eef0ff; }
+
+  .score { font-size: 1.2em; font-weight: 700; color: #5a67d8; }
+  .feedback { margin: 10px 0; padding: 10px; border-radius: 6px; font-weight: 500; }
+  .feedback.correct { background: #c6f6d5; color: #276749; }
+  .feedback.wrong { background: #fff5f5; color: #c53030; }
+
+  .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; margin: 8px 0; overflow: hidden; }
+  .progress-fill { height: 100%; background: #667eea; border-radius: 4px; transition: width .4s; }
+
+  .tips { background: #fffbeb; border: 1px solid #fbd38d; border-radius: 8px; padding: 14px; margin: 12px 0; font-size: .95em; }
+
+  footer { text-align: center; color: #a0aec0; padding: 20px; font-size: .85em; }
+
+  .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 100; justify-content: center; align-items: center; }
+  .modal.show { display: flex; }
+  .modal-content { background: #fff; border-radius: 12px; padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+  .modal-content h3 { margin-top: 0; }
+  .close { float: right; font-size: 1.4em; cursor: pointer; color: #a0aec0; line-height: 1; }
+  .close:hover { color: #333; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>初中英语学习助手（人教版）</h1>
+  <p>词汇 · 语法 · 练习 — 七年級~九年級全覆盖（适合基础薄弱同学）</p>
+</header>
+
+<nav>
+  <button class="active" onclick="switchPanel('plan', this)">学习计划</button>
+  <button onclick="switchPanel('vocab', this)">词汇练习</button>
+  <button onclick="switchPanel('grammar', this)">语法练习</button>
+  <button onclick="switchPanel('daily', this)">每日任务</button>
+  <button onclick="switchPanel('wrong', this)">错题本 <span id="wrongCount" style="font-size:.8em">(0)</span></button>
+</nav>
+
+<!-- ==================== 学习计划面板 ==================== -->
+<div id="plan" class="panel active">
+  <h2>学习路线图（七年級→九年級人教版全程）</h2>
+  <div class="tips">
+    <strong>核心原则：</strong>每天30分钟；按教材单元顺序推进；先词汇后语法；错题必回顾。本工具覆盖人教版七上~九年级全册词汇和语法。
+  </div>
+
+  <h3>初一篇：打好地基（七年级上/下共12单元）</h3>
+  <div class="card">
+    <h4>学习重点</h4>
+    <ul>
+      <li><strong>词汇：</strong>七上 Starter~Unit 9：基础问候、家庭、学校用品、颜色、数字、月份、学科</li>
+      <li><strong>词汇：</strong>七下 Unit 1~12：能力爱好、日常作息、交通方式、校规、动物、天气、外貌、食物、周末活动</li>
+      <li><strong>语法：</strong>be动词 → 一般现在时(三单) → 人称/物主代词 → 现在进行时 → 一般过去时</li>
+      <li><strong>目标：</strong>掌握约600个基础词汇 + 4个核心时态，能读懂100词短文</li>
+    </ul>
+  </div>
+
+  <h3>初二篇：能力跃升（八年级上/下共20单元）</h3>
+  <div class="card">
+    <h4>学习重点</h4>
+    <ul>
+      <li><strong>词汇：</strong>八上 Unit 1~10：假期旅行、频率副词、人物比较、影视娱乐、职业理想、未来预测、食物制作、邀请聚会、条件决策</li>
+      <li><strong>词汇：</strong>八下 Unit 1~10：健康急救、志愿服务、家务责任、人际沟通、过去事件、传说故事、地理自然、文学阅读、博物场馆、旧物情怀</li>
+      <li><strong>语法：</strong>比较级/最高级 → 一般将来时 → 情态动词 → 条件状语从句(if) → 现在完成时 → 过去进行时</li>
+      <li><strong>目标：</strong>掌握约800个进阶词汇 + 6个语法难点，能写80词短文</li>
+    </ul>
+  </div>
+
+  <h3>初三篇：冲刺中考（九年级全一册共14单元）</h3>
+  <div class="card">
+    <h4>学习重点</h4>
+    <ul>
+      <li><strong>词汇：</strong>Unit 1~14：学习方法、节日文化、问路礼仪、成长变化、制造材料、发明创造、规则选择、推理判断、音乐偏好、风俗礼仪、情感感受、意外事件、环境保护、毕业回忆</li>
+      <li><strong>语法：</strong>宾语从句 → 被动语态 → 定语从句 → 情态动词表推测 → 综合复习</li>
+      <li><strong>目标：</strong>掌握约600个中考高频词 + 3大复杂句型，中考英语冲刺100+</li>
+    </ul>
+  </div>
+
+  <h3>每日时间分配建议</h3>
+  <table>
+    <tr><th>时间段</th><th>内容</th><th>时长</th></tr>
+    <tr><td>早晨（早读）</td><td>朗读课文 + 复习昨天单词</td><td>10分钟</td></tr>
+    <tr><td>课间/午休</td><td>用本工具做词汇练习</td><td>5分钟</td></tr>
+    <tr><td>晚上（作业后）</td><td>学习新单词 + 语法练习 + 错题回顾</td><td>15分钟</td></tr>
+    <tr><td>周末</td><td>阅读训练 + 写作 + 一周总复习</td><td>40分钟</td></tr>
+  </table>
+</div>
+
+<!-- ==================== 词汇练习面板 ==================== -->
+<div id="vocab" class="panel">
+  <h2>词汇练习</h2>
+  <div style="margin-bottom:16px;">
+    <label for="unitSelect">选择单元：</label>
+    <select id="unitSelect" onchange="loadVocabUnit()" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc;">
+      <option value="0">七年级上 Starter~Unit 3</option>
+      <option value="1">七年级上 Unit 4~6</option>
+      <option value="2">七年级上 Unit 7~9</option>
+      <option value="3">七年级下 Unit 1~3</option>
+      <option value="4">七年级下 Unit 4~6</option>
+      <option value="5">七年级下 Unit 7~9</option>
+      <option value="6">七年级下 Unit 10~12</option>
+      <option value="7">八年级上 Unit 1~2</option>
+      <option value="8">八年级上 Unit 3~4</option>
+      <option value="9">八年级上 Unit 5~6</option>
+      <option value="10">八年级上 Unit 7~8</option>
+      <option value="11">八年级上 Unit 9~10</option>
+      <option value="12">八年级下 Unit 1~2</option>
+      <option value="13">八年级下 Unit 3~4</option>
+      <option value="14">八年级下 Unit 5~6</option>
+      <option value="15">八年级下 Unit 7~8</option>
+      <option value="16">八年级下 Unit 9~10</option>
+      <option value="17">九年级 Unit 1~2</option>
+      <option value="18">九年级 Unit 3~4</option>
+      <option value="19">九年级 Unit 5~6</option>
+      <option value="20">九年级 Unit 7~8</option>
+      <option value="21">九年级 Unit 9~10</option>
+      <option value="22">九年级 Unit 11~12</option>
+      <option value="23">九年级 Unit 13~14</option>
+    </select>
+    <button class="btn btn-primary" onclick="startVocabQuiz()" style="margin-left:8px;">开始测验</button>
+    <button class="btn btn-outline" onclick="showVocabList()" style="margin-left:8px;">查看单词表</button>
+  </div>
+
+  <div class="progress-bar"><div id="vocabProgress" class="progress-fill" style="width:0%"></div></div>
+
+  <div id="vocabQuizArea">
+    <p style="color:#a0aec0;text-align:center;padding:40px 0;">选择一个单元，点击"开始测验"或"查看单词表"</p>
+  </div>
+
+  <div id="vocabResult" style="text-align:center;margin-top:12px;"></div>
+</div>
+
+<!-- ==================== 语法练习面板 ==================== -->
+<div id="grammar" class="panel">
+  <h2>语法练习</h2>
+  <div style="margin-bottom:16px;">
+    <label for="grammarTopic">选择语法点：</label>
+    <select id="grammarTopic" onchange="loadGrammarTopic()" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc;">
+      <option value="0">一般现在时 & be动词 (七上)</option>
+      <option value="1">人称代词和物主代词 (七上-七下)</option>
+      <option value="2">现在进行时 (七下 Unit 6)</option>
+      <option value="3">一般过去时 (七下 Unit 11-12)</option>
+      <option value="4">形容词比较级和最高级 (八上 U3-4)</option>
+      <option value="5">一般将来时 (八上 Unit 6-7)</option>
+      <option value="6">情态动词 can/must/should 等</option>
+      <option value="7">条件状语从句 if (八上 Unit 10)</option>
+      <option value="8">现在完成时 (八下 Unit 8-10)</option>
+      <option value="9">过去进行时 (八下 Unit 5)</option>
+      <option value="10">宾语从句 (九年级 Unit 2-3)</option>
+      <option value="11">被动语态 (九年级 Unit 5-7)</option>
+      <option value="12">定语从句 (九年级 Unit 9)</option>
+    </select>
+    <button class="btn btn-primary" onclick="startGrammarQuiz()" style="margin-left:8px;">开始练习</button>
+    <button class="btn btn-outline" onclick="showGrammarNotes()" style="margin-left:8px;">查看语法笔记</button>
+  </div>
+
+  <div class="progress-bar"><div id="grammarProgress" class="progress-fill" style="width:0%"></div></div>
+
+  <div id="grammarQuizArea">
+    <p style="color:#a0aec0;text-align:center;padding:40px 0;">选择一个语法点，点击"开始练习"或"查看语法笔记"</p>
+  </div>
+
+  <div id="grammarResult" style="text-align:center;margin-top:12px;"></div>
+</div>
+
+<!-- ==================== 每日任务面板 ==================== -->
+<div id="daily" class="panel">
+  <h2>今日任务清单 <span id="todayDate" style="font-size:.7em;color:#a0aec0;"></span></h2>
+  <div class="card">
+    <h4>每日必做（约30分钟）</h4>
+    <table>
+      <tr><td><input type="checkbox" id="t1" onchange="saveTasks()"></td><td>朗读课文10分钟（培养语感）</td></tr>
+      <tr><td><input type="checkbox" id="t2" onchange="saveTasks()"></td><td>背15个新单词 + 复习10个旧单词</td></tr>
+      <tr><td><input type="checkbox" id="t3" onchange="saveTasks()"></td><td>做一组词汇练习（本工具）</td></tr>
+      <tr><td><input type="checkbox" id="t4" onchange="saveTasks()"></td><td>做一组语法练习（本工具）</td></tr>
+      <tr><td><input type="checkbox" id="t5" onchange="saveTasks()"></td><td>整理错题到错题本</td></tr>
+      <tr><td><input type="checkbox" id="t6" onchange="saveTasks()"></td><td>睡前回忆今天学的单词</td></tr>
+    </table>
+  </div>
+  <div class="card hot">
+    <h4>今日特殊任务（根据学习阶段调整）</h4>
+    <p id="specialTask">加载中...</p>
+  </div>
+  <div class="tips">
+    <strong>小贴士：</strong>完成任务后打勾，全部完成会有成就感！如果今天只完成了部分，也没关系，明天继续就好。
+  </div>
+</div>
+
+<!-- ==================== 错题本面板 ==================== -->
+<div id="wrong" class="panel">
+  <h2>错题本</h2>
+  <p style="color:#a0aec0;margin-bottom:12px;">做错的题目会自动收集到这里，定期回顾效果最好</p>
+  <div id="wrongList"></div>
+  <button class="btn btn-outline" onclick="clearWrongBook()" style="margin-top:12px;">清空错题本</button>
+</div>
+
+<!-- 单词详情弹窗 -->
+<div id="wordModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="wordDetail"></div>
+  </div>
+</div>
+
+<footer>每天进步一点点，12周后你会感谢现在努力的自己。</footer>
+</div>
+
+<script>
+// ==================== 数据 ====================
+
+const vocabUnits = [
+  { // 七上 Starter + Unit 1-3
+    name: "七年级上 Starter~Unit 3",
+    words: [
+      { en: "name", cn: "名字；名称", pos: "n." },
+      { en: "book", cn: "书", pos: "n." },
+      { en: "pen", cn: "钢笔；笔", pos: "n." },
+      { en: "ruler", cn: "尺子", pos: "n." },
+      { en: "map", cn: "地图", pos: "n." },
+      { en: "key", cn: "钥匙；关键", pos: "n." },
+      { en: "color", cn: "颜色", pos: "n." },
+      { en: "red", cn: "红色的", pos: "adj." },
+      { en: "yellow", cn: "黄色的", pos: "adj." },
+      { en: "green", cn: "绿色的", pos: "adj." },
+      { en: "blue", cn: "蓝色的", pos: "adj." },
+      { en: "black", cn: "黑色的", pos: "adj." },
+      { en: "white", cn: "白色的", pos: "adj." },
+      { en: "family", cn: "家庭；家人", pos: "n." },
+      { en: "mother", cn: "妈妈；母亲", pos: "n." },
+      { en: "father", cn: "爸爸；父亲", pos: "n." },
+      { en: "brother", cn: "兄弟", pos: "n." },
+      { en: "sister", cn: "姐妹", pos: "n." },
+      { en: "pencil", cn: "铅笔", pos: "n." },
+      { en: "eraser", cn: "橡皮", pos: "n." },
+      { en: "schoolbag", cn: "书包", pos: "n." },
+      { en: "notebook", cn: "笔记本", pos: "n." },
+      { en: "dictionary", cn: "词典", pos: "n." },
+      { en: "library", cn: "图书馆", pos: "n." },
+      { en: "ask", cn: "问；请求", pos: "v." },
+      { en: "find", cn: "找到；发现", pos: "v." },
+      { en: "call", cn: "打电话；称呼", pos: "v." },
+      { en: "ring", cn: "给…打电话；戒指", pos: "v./n." },
+      { en: "classroom", cn: "教室", pos: "n." },
+      { en: "thank", cn: "感谢", pos: "v." }
+    ]
+  },
+  { // 七上 Unit 4-6
+    name: "七年级上 Unit 4~6",
+    words: [
+      { en: "where", cn: "在哪里", pos: "adv." },
+      { en: "table", cn: "桌子", pos: "n." },
+      { en: "bed", cn: "床", pos: "n." },
+      { en: "chair", cn: "椅子", pos: "n." },
+      { en: "sofa", cn: "沙发", pos: "n." },
+      { en: "under", cn: "在…下面", pos: "prep." },
+      { en: "behind", cn: "在…后面", pos: "prep." },
+      { en: "next", cn: "下一个；隔壁", pos: "adj./adv." },
+      { en: "radio", cn: "收音机", pos: "n." },
+      { en: "clock", cn: "时钟", pos: "n." },
+      { en: "know", cn: "知道；认识", pos: "v." },
+      { en: "always", cn: "总是", pos: "adv." },
+      { en: "tidy", cn: "整洁的", pos: "adj." },
+      { en: "everywhere", cn: "到处", pos: "adv." },
+      { en: "soccer", cn: "足球", pos: "n." },
+      { en: "basketball", cn: "篮球", pos: "n." },
+      { en: "tennis", cn: "网球", pos: "n." },
+      { en: "have", cn: "有；拥有", pos: "v." },
+      { en: "play", cn: "玩；打(球)；播放", pos: "v." },
+      { en: "like", cn: "喜欢", pos: "v." },
+      { en: "love", cn: "喜爱；热爱", pos: "v." },
+      { en: "banana", cn: "香蕉", pos: "n." },
+      { en: "apple", cn: "苹果", pos: "n." },
+      { en: "egg", cn: "鸡蛋", pos: "n." },
+      { en: "chicken", cn: "鸡肉", pos: "n." },
+      { en: "rice", cn: "米饭；大米", pos: "n." },
+      { en: "vegetable", cn: "蔬菜", pos: "n." },
+      { en: "fruit", cn: "水果", pos: "n." },
+      { en: "healthy", cn: "健康的", pos: "adj." },
+      { en: "habit", cn: "习惯", pos: "n." }
+    ]
+  },
+  { // 七上 Unit 7-9
+    name: "七年级上 Unit 7~9",
+    words: [
+      { en: "much", cn: "许多；大量", pos: "adj./adv." },
+      { en: "sock", cn: "短袜", pos: "n." },
+      { en: "shirt", cn: "衬衫", pos: "n." },
+      { en: "sweater", cn: "毛衣", pos: "n." },
+      { en: "trousers", cn: "裤子", pos: "n." },
+      { en: "shoe", cn: "鞋", pos: "n." },
+      { en: "short", cn: "短的；矮的", pos: "adj." },
+      { en: "long", cn: "长的", pos: "adj." },
+      { en: "dollar", cn: "美元", pos: "n." },
+      { en: "price", cn: "价格", pos: "n." },
+      { en: "month", cn: "月份", pos: "n." },
+      { en: "January", cn: "一月", pos: "n." },
+      { en: "February", cn: "二月", pos: "n." },
+      { en: "March", cn: "三月", pos: "n." },
+      { en: "April", cn: "四月", pos: "n." },
+      { en: "May", cn: "五月", pos: "n." },
+      { en: "June", cn: "六月", pos: "n." },
+      { en: "July", cn: "七月", pos: "n." },
+      { en: "August", cn: "八月", pos: "n." },
+      { en: "September", cn: "九月", pos: "n." },
+      { en: "October", cn: "十月", pos: "n." },
+      { en: "November", cn: "十一月", pos: "n." },
+      { en: "December", cn: "十二月", pos: "n." },
+      { en: "happy", cn: "开心的；幸福的", pos: "adj." },
+      { en: "old", cn: "老的；旧的", pos: "adj." },
+      { en: "subject", cn: "学科；科目", pos: "n." },
+      { en: "science", cn: "科学", pos: "n." },
+      { en: "music", cn: "音乐", pos: "n." },
+      { en: "math", cn: "数学", pos: "n." },
+      { en: "history", cn: "历史", pos: "n." }
+    ]
+  },
+  { // 七下 Unit 1-3
+    name: "七年级下 Unit 1~3",
+    words: [
+      { en: "guitar", cn: "吉他", pos: "n." },
+      { en: "sing", cn: "唱歌", pos: "v." },
+      { en: "swim", cn: "游泳", pos: "v." },
+      { en: "dance", cn: "跳舞", pos: "v." },
+      { en: "draw", cn: "画画", pos: "v." },
+      { en: "write", cn: "写", pos: "v." },
+      { en: "tell", cn: "告诉；讲述", pos: "v." },
+      { en: "story", cn: "故事", pos: "n." },
+      { en: "usually", cn: "通常", pos: "adv." },
+      { en: "early", cn: "早的", pos: "adj./adv." },
+      { en: "dress", cn: "连衣裙；穿衣服", pos: "n./v." },
+      { en: "brush", cn: "刷；刷子", pos: "v./n." },
+      { en: "tooth", cn: "牙齿", pos: "n." },
+      { en: "shower", cn: "淋浴", pos: "n." },
+      { en: "quickly", cn: "快速地", pos: "adv." },
+      { en: "either", cn: "也（否定句）", pos: "adv." },
+      { en: "train", cn: "火车", pos: "n." },
+      { en: "bus", cn: "公共汽车", pos: "n." },
+      { en: "ride", cn: "骑；乘坐", pos: "v." },
+      { en: "drive", cn: "驾驶", pos: "v." },
+      { en: "live", cn: "居住；生活", pos: "v." },
+      { en: "cross", cn: "穿过；横过", pos: "v." },
+      { en: "river", cn: "河；江", pos: "n." },
+      { en: "village", cn: "村庄", pos: "n." },
+      { en: "bridge", cn: "桥", pos: "n." },
+      { en: "afraid", cn: "害怕的", pos: "adj." },
+      { en: "leave", cn: "离开", pos: "v." },
+      { en: "dream", cn: "梦想", pos: "n./v." },
+      { en: "true", cn: "真的；真实的", pos: "adj." },
+      { en: "minute", cn: "分钟", pos: "n." }
+    ]
+  },
+  { // 七下 Unit 4-6
+    name: "七年级下 Unit 4~6",
+    words: [
+      { en: "rule", cn: "规则", pos: "n." },
+      { en: "arrive", cn: "到达", pos: "v." },
+      { en: "listen", cn: "听", pos: "v." },
+      { en: "fight", cn: "打架；战斗", pos: "v./n." },
+      { en: "important", cn: "重要的", pos: "adj." },
+      { en: "quiet", cn: "安静的", pos: "adj." },
+      { en: "practice", cn: "练习", pos: "v./n." },
+      { en: "remember", cn: "记住", pos: "v." },
+      { en: "follow", cn: "遵守；跟随", pos: "v." },
+      { en: "panda", cn: "熊猫", pos: "n." },
+      { en: "elephant", cn: "大象", pos: "n." },
+      { en: "lion", cn: "狮子", pos: "n." },
+      { en: "animal", cn: "动物", pos: "n." },
+      { en: "save", cn: "拯救；节省", pos: "v." },
+      { en: "flag", cn: "旗帜；国旗", pos: "n." },
+      { en: "danger", cn: "危险", pos: "n." },
+      { en: "newspaper", cn: "报纸", pos: "n." },
+      { en: "wash", cn: "洗", pos: "v." },
+      { en: "movie", cn: "电影", pos: "n." },
+      { en: "cook", cn: "做饭；厨师", pos: "v./n." },
+      { en: "drink", cn: "喝；饮料", pos: "v./n." },
+      { en: "shop", cn: "购物；商店", pos: "v./n." },
+      { en: "race", cn: "比赛", pos: "n." },
+      { en: "still", cn: "仍然", pos: "adv." },
+      { en: "wish", cn: "希望；祝愿", pos: "v./n." },
+      { en: "delicious", cn: "美味的", pos: "adj." },
+      { en: "miss", cn: "想念；错过", pos: "v." },
+      { en: "world", cn: "世界", pos: "n." },
+      { en: "cut", cn: "切；砍", pos: "v." },
+      { en: "young", cn: "年轻的", pos: "adj." }
+    ]
+  },
+  { // 七下 Unit 7-9
+    name: "七年级下 Unit 7~9",
+    words: [
+      { en: "rain", cn: "下雨；雨", pos: "v./n." },
+      { en: "windy", cn: "有风的", pos: "adj." },
+      { en: "cloudy", cn: "多云的", pos: "adj." },
+      { en: "sunny", cn: "晴朗的", pos: "adj." },
+      { en: "snow", cn: "下雪；雪", pos: "v./n." },
+      { en: "weather", cn: "天气", pos: "n." },
+      { en: "cook", cn: "做饭；厨师", pos: "v./n." },
+      { en: "message", cn: "消息；信息", pos: "n." },
+      { en: "problem", cn: "问题；难题", pos: "n." },
+      { en: "vacation", cn: "假期", pos: "n." },
+      { en: "post", cn: "邮政；邮寄", pos: "n./v." },
+      { en: "office", cn: "办公室", pos: "n." },
+      { en: "police", cn: "警察", pos: "n." },
+      { en: "hotel", cn: "酒店", pos: "n." },
+      { en: "restaurant", cn: "餐馆", pos: "n." },
+      { en: "bank", cn: "银行", pos: "n." },
+      { en: "hospital", cn: "医院", pos: "n." },
+      { en: "across", cn: "在…对面", pos: "prep./adv." },
+      { en: "along", cn: "沿着", pos: "prep." },
+      { en: "turn", cn: "转向；转弯", pos: "v." },
+      { en: "tall", cn: "高的", pos: "adj." },
+      { en: "height", cn: "身高；高度", pos: "n." },
+      { en: "thin", cn: "瘦的；薄的", pos: "adj." },
+      { en: "heavy", cn: "重的", pos: "adj." },
+      { en: "round", cn: "圆形的", pos: "adj." },
+      { en: "face", cn: "脸；面对", pos: "n./v." },
+      { en: "mouth", cn: "嘴", pos: "n." },
+      { en: "eye", cn: "眼睛", pos: "n." },
+      { en: "describe", cn: "描述", pos: "v." },
+      { en: "another", cn: "另一个", pos: "adj./pron." }
+    ]
+  },
+  { // 七下 Unit 10-12
+    name: "七年级下 Unit 10~12",
+    words: [
+      { en: "noodle", cn: "面条", pos: "n." },
+      { en: "potato", cn: "土豆", pos: "n." },
+      { en: "size", cn: "大小；尺码", pos: "n." },
+      { en: "order", cn: "点菜；命令", pos: "v./n." },
+      { en: "special", cn: "特别的；特色菜", pos: "adj./n." },
+      { en: "age", cn: "年龄", pos: "n." },
+      { en: "answer", cn: "回答；答案", pos: "v./n." },
+      { en: "blow", cn: "吹", pos: "v." },
+      { en: "candy", cn: "糖果", pos: "n." },
+      { en: "luck", cn: "运气", pos: "n." },
+      { en: "milk", cn: "牛奶", pos: "n." },
+      { en: "cow", cn: "奶牛", pos: "n." },
+      { en: "horse", cn: "马", pos: "n." },
+      { en: "feed", cn: "喂养", pos: "v." },
+      { en: "grow", cn: "种植；生长", pos: "v." },
+      { en: "farm", cn: "农场", pos: "n." },
+      { en: "pick", cn: "摘；挑选", pos: "v." },
+      { en: "excellent", cn: "极好的；优秀的", pos: "adj." },
+      { en: "worry", cn: "担心", pos: "v." },
+      { en: "camp", cn: "露营；营地", pos: "v./n." },
+      { en: "lake", cn: "湖", pos: "n." },
+      { en: "beach", cn: "海滩", pos: "n." },
+      { en: "sheep", cn: "绵羊", pos: "n." },
+      { en: "natural", cn: "自然的", pos: "adj." },
+      { en: "tired", cn: "疲倦的", pos: "adj." },
+      { en: "stay", cn: "待；停留", pos: "v." },
+      { en: "surprise", cn: "使吃惊；惊喜", pos: "v./n." },
+      { en: "move", cn: "移动；搬家", pos: "v." },
+      { en: "start", cn: "开始", pos: "v." },
+      { en: "wake", cn: "醒来；唤醒", pos: "v." }
+    ]
+  },
+  { // 八上 Unit 1-2
+    name: "八年级上 Unit 1~2",
+    words: [
+      { en: "wonderful", cn: "精彩的；极好的", pos: "adj." },
+      { en: "activity", cn: "活动", pos: "n." },
+      { en: "decide", cn: "决定", pos: "v." },
+      { en: "try", cn: "尝试；努力", pos: "v./n." },
+      { en: "difference", cn: "不同；差异", pos: "n." },
+      { en: "wait", cn: "等待", pos: "v." },
+      { en: "enough", cn: "足够的", pos: "adj./adv." },
+      { en: "hungry", cn: "饥饿的", pos: "adj." },
+      { en: "hardly", cn: "几乎不", pos: "adv." },
+      { en: "ever", cn: "曾经", pos: "adv." },
+      { en: "once", cn: "一次；曾经", pos: "adv." },
+      { en: "twice", cn: "两次", pos: "adv." },
+      { en: "program", cn: "节目；程序", pos: "n." },
+      { en: "full", cn: "满的；饱的", pos: "adj." },
+      { en: "maybe", cn: "也许；可能", pos: "adv." },
+      { en: "result", cn: "结果", pos: "n." },
+      { en: "percent", cn: "百分之…", pos: "n." },
+      { en: "online", cn: "在线的", pos: "adj." },
+      { en: "together", cn: "一起", pos: "adv." },
+      { en: "health", cn: "健康", pos: "n." },
+      { en: "die", cn: "死亡；消失", pos: "v." },
+      { en: "although", cn: "虽然；尽管", pos: "conj." },
+      { en: "through", cn: "通过；穿过", pos: "prep." },
+      { en: "mind", cn: "介意；头脑", pos: "v./n." },
+      { en: "body", cn: "身体", pos: "n." },
+      { en: "dentist", cn: "牙医", pos: "n." },
+      { en: "magazine", cn: "杂志", pos: "n." },
+      { en: "however", cn: "然而", pos: "adv." },
+      { en: "almost", cn: "几乎；差不多", pos: "adv." },
+      { en: "none", cn: "没有一个", pos: "pron." }
+    ]
+  },
+  { // 八上 Unit 3-4
+    name: "八年级上 Unit 3~4",
+    words: [
+      { en: "outgoing", cn: "外向的", pos: "adj." },
+      { en: "competition", cn: "比赛；竞争", pos: "n." },
+      { en: "fantastic", cn: "极好的", pos: "adj." },
+      { en: "clearly", cn: "清楚地", pos: "adv." },
+      { en: "win", cn: "赢；获胜", pos: "v." },
+      { en: "though", cn: "虽然；不过", pos: "conj./adv." },
+      { en: "talented", cn: "有才能的", pos: "adj." },
+      { en: "truly", cn: "真正地", pos: "adv." },
+      { en: "care", cn: "关心；在意", pos: "v." },
+      { en: "serious", cn: "严肃的", pos: "adj." },
+      { en: "mirror", cn: "镜子", pos: "n." },
+      { en: "necessary", cn: "必要的", pos: "adj." },
+      { en: "similar", cn: "相似的", pos: "adj." },
+      { en: "share", cn: "分享；共享", pos: "v." },
+      { en: "theater", cn: "剧院", pos: "n." },
+      { en: "comfortable", cn: "舒适的", pos: "adj." },
+      { en: "seat", cn: "座位", pos: "n." },
+      { en: "screen", cn: "屏幕", pos: "n." },
+      { en: "close", cn: "近的；关闭", pos: "adj./v." },
+      { en: "cheap", cn: "便宜的", pos: "adj." },
+      { en: "popular", cn: "受欢迎的", pos: "adj." },
+      { en: "crowded", cn: "拥挤的", pos: "adj." },
+      { en: "creative", cn: "有创造力的", pos: "adj." },
+      { en: "performer", cn: "表演者", pos: "n." },
+      { en: "prize", cn: "奖品；奖金", pos: "n." },
+      { en: "example", cn: "例子", pos: "n." },
+      { en: "poor", cn: "贫穷的；可怜的", pos: "adj." },
+      { en: "choose", cn: "选择", pos: "v." },
+      { en: "service", cn: "服务", pos: "n." },
+      { en: "pretty", cn: "相当；漂亮的", pos: "adv./adj." }
+    ]
+  },
+  { // 八上 Unit 5-6
+    name: "八年级上 Unit 5~6",
+    words: [
+      { en: "news", cn: "新闻；消息", pos: "n." },
+      { en: "educational", cn: "有教育意义的", pos: "adj." },
+      { en: "plan", cn: "计划", pos: "v./n." },
+      { en: "hope", cn: "希望", pos: "v./n." },
+      { en: "discuss", cn: "讨论", pos: "v." },
+      { en: "expect", cn: "期望；预料", pos: "v." },
+      { en: "meaningless", cn: "无意义的", pos: "adj." },
+      { en: "culture", cn: "文化", pos: "n." },
+      { en: "famous", cn: "著名的", pos: "adj." },
+      { en: "appear", cn: "出现", pos: "v." },
+      { en: "become", cn: "变成", pos: "v." },
+      { en: "successful", cn: "成功的", pos: "adj." },
+      { en: "reason", cn: "原因", pos: "n." },
+      { en: "promise", cn: "承诺；许诺", pos: "v./n." },
+      { en: "improve", cn: "提高；改善", pos: "v." },
+      { en: "physical", cn: "身体的", pos: "adj." },
+      { en: "hobby", cn: "爱好", pos: "n." },
+      { en: "painting", cn: "绘画", pos: "n." },
+      { en: "foreign", cn: "外国的", pos: "adj." },
+      { en: "cook", cn: "厨师；烹饪", pos: "n./v." },
+      { en: "doctor", cn: "医生", pos: "n." },
+      { en: "pilot", cn: "飞行员", pos: "n." },
+      { en: "scientist", cn: "科学家", pos: "n." },
+      { en: "college", cn: "学院；大学", pos: "n." },
+      { en: "education", cn: "教育", pos: "n." },
+      { en: "discuss", cn: "讨论", pos: "v." },
+      { en: "resolution", cn: "决心；决议", pos: "n." },
+      { en: "team", cn: "团队", pos: "n." },
+      { en: "personal", cn: "个人的；私人的", pos: "adj." },
+      { en: "relationship", cn: "关系", pos: "n." }
+    ]
+  },
+  { // 八上 Unit 7-8
+    name: "八年级上 Unit 7~8",
+    words: [
+      { en: "robot", cn: "机器人", pos: "n." },
+      { en: "paper", cn: "纸", pos: "n." },
+      { en: "pollution", cn: "污染", pos: "n." },
+      { en: "future", cn: "将来；未来", pos: "n." },
+      { en: "environment", cn: "环境", pos: "n." },
+      { en: "planet", cn: "行星", pos: "n." },
+      { en: "earth", cn: "地球；泥土", pos: "n." },
+      { en: "dangerous", cn: "危险的", pos: "adj." },
+      { en: "believe", cn: "相信", pos: "v." },
+      { en: "agree", cn: "同意", pos: "v." },
+      { en: "possible", cn: "可能的", pos: "adj." },
+      { en: "probably", cn: "大概；很可能", pos: "adv." },
+      { en: "shake", cn: "摇动；抖动", pos: "v." },
+      { en: "pour", cn: "倒；倾倒", pos: "v." },
+      { en: "blender", cn: "搅拌机", pos: "n." },
+      { en: "peel", cn: "剥皮；削皮", pos: "v." },
+      { en: "add", cn: "添加；增加", pos: "v." },
+      { en: "finally", cn: "最后；终于", pos: "adv." },
+      { en: "salt", cn: "盐", pos: "n." },
+      { en: "sandwich", cn: "三明治", pos: "n." },
+      { en: "butter", cn: "黄油", pos: "n." },
+      { en: "piece", cn: "片；块；张", pos: "n." },
+      { en: "traditional", cn: "传统的", pos: "adj." },
+      { en: "autumn", cn: "秋天", pos: "n." },
+      { en: "celebrate", cn: "庆祝", pos: "v." },
+      { en: "prepare", cn: "准备", pos: "v." },
+      { en: "fill", cn: "装满；填满", pos: "v." },
+      { en: "cover", cn: "覆盖；盖子", pos: "v./n." },
+      { en: "serve", cn: "服务；提供", pos: "v." },
+      { en: "temperature", cn: "温度", pos: "n." }
+    ]
+  },
+  { // 八上 Unit 9-10
+    name: "八年级上 Unit 9~10",
+    words: [
+      { en: "prepare", cn: "准备", pos: "v." },
+      { en: "invite", cn: "邀请", pos: "v." },
+      { en: "accept", cn: "接受", pos: "v." },
+      { en: "refuse", cn: "拒绝", pos: "v." },
+      { en: "reply", cn: "回复；答复", pos: "v./n." },
+      { en: "forward", cn: "转发；向前", pos: "v./adv." },
+      { en: "delete", cn: "删除", pos: "v." },
+      { en: "sad", cn: "难过的", pos: "adj." },
+      { en: "goodbye", cn: "再见", pos: "interj." },
+      { en: "surprise", cn: "使吃惊；惊喜", pos: "v./n." },
+      { en: "event", cn: "事件；大事", pos: "n." },
+      { en: "calendar", cn: "日历", pos: "n." },
+      { en: "meeting", cn: "会议", pos: "n." },
+      { en: "video", cn: "视频", pos: "n." },
+      { en: "organize", cn: "组织", pos: "v." },
+      { en: "advice", cn: "建议（不可数）", pos: "n." },
+      { en: "upset", cn: "难过的；不安的", pos: "adj." },
+      { en: "taxi", cn: "出租车", pos: "n." },
+      { en: "travel", cn: "旅行", pos: "v./n." },
+      { en: "agent", cn: "代理人", pos: "n." },
+      { en: "expert", cn: "专家", pos: "n." },
+      { en: "experience", cn: "经验；经历", pos: "n." },
+      { en: "mistake", cn: "错误", pos: "n." },
+      { en: "careful", cn: "小心的", pos: "adj." },
+      { en: "solve", cn: "解决", pos: "v." },
+      { en: "trust", cn: "信任", pos: "v./n." },
+      { en: "normal", cn: "正常的", pos: "adj." },
+      { en: "angry", cn: "生气的", pos: "adj." },
+      { en: "understanding", cn: "善解人意的", pos: "adj." },
+      { en: "certainly", cn: "当然；肯定地", pos: "adv." }
+    ]
+  },
+  { // 八下 Unit 1-2
+    name: "八年级下 Unit 1~2",
+    words: [
+      { en: "matter", cn: "事情；问题", pos: "n./v." },
+      { en: "stomach", cn: "胃；肚子", pos: "n." },
+      { en: "fever", cn: "发烧", pos: "n." },
+      { en: "cough", cn: "咳嗽", pos: "n./v." },
+      { en: "headache", cn: "头痛", pos: "n." },
+      { en: "break", cn: "休息；打破", pos: "n./v." },
+      { en: "hurt", cn: "受伤；疼痛", pos: "v." },
+      { en: "passenger", cn: "乘客", pos: "n." },
+      { en: "trouble", cn: "麻烦；困难", pos: "n." },
+      { en: "hit", cn: "撞击；打", pos: "v." },
+      { en: "situation", cn: "情况；形势", pos: "n." },
+      { en: "breathe", cn: "呼吸", pos: "v." },
+      { en: "volunteer", cn: "志愿者；自愿做", pos: "n./v." },
+      { en: "notice", cn: "注意到；通知", pos: "v./n." },
+      { en: "lonely", cn: "孤独的", pos: "adj." },
+      { en: "alone", cn: "独自的", pos: "adj./adv." },
+      { en: "raise", cn: "筹集；举起；养育", pos: "v." },
+      { en: "repair", cn: "修理", pos: "v." },
+      { en: "imagine", cn: "想象", pos: "v." },
+      { en: "disabled", cn: "残疾的", pos: "adj." },
+      { en: "difficulty", cn: "困难", pos: "n." },
+      { en: "carry", cn: "拿；搬；扛", pos: "v." },
+      { en: "train", cn: "训练；火车", pos: "v./n." },
+      { en: "kindness", cn: "善良", pos: "n." },
+      { en: "satisfaction", cn: "满足；满意", pos: "n." },
+      { en: "owner", cn: "主人；所有者", pos: "n." },
+      { en: "letter", cn: "信；字母", pos: "n." },
+      { en: "excited", cn: "兴奋的", pos: "adj." },
+      { en: "change", cn: "改变；变化", pos: "v./n." },
+      { en: "interest", cn: "兴趣", pos: "n." }
+    ]
+  },
+  { // 八下 Unit 3-4
+    name: "八年级下 Unit 3~4",
+    words: [
+      { en: "rubbish", cn: "垃圾", pos: "n." },
+      { en: "fold", cn: "折叠", pos: "v." },
+      { en: "sweep", cn: "打扫", pos: "v." },
+      { en: "floor", cn: "地板", pos: "n." },
+      { en: "mess", cn: "杂乱；不整洁", pos: "n." },
+      { en: "neighbor", cn: "邻居", pos: "n." },
+      { en: "provide", cn: "提供；供应", pos: "v." },
+      { en: "develop", cn: "发展；培养", pos: "v." },
+      { en: "independence", cn: "独立", pos: "n." },
+      { en: "fairness", cn: "公平", pos: "n." },
+      { en: "pressure", cn: "压力", pos: "n." },
+      { en: "compete", cn: "竞争", pos: "v." },
+      { en: "opinion", cn: "意见；看法", pos: "n." },
+      { en: "continue", cn: "继续", pos: "v." },
+      { en: "compare", cn: "比较", pos: "v." },
+      { en: "nervous", cn: "紧张的", pos: "adj." },
+      { en: "offer", cn: "提供；主动提出", pos: "v." },
+      { en: "explain", cn: "解释", pos: "v." },
+      { en: "return", cn: "返回；归还", pos: "v." },
+      { en: "relation", cn: "关系", pos: "n." },
+      { en: "communication", cn: "交流；沟通", pos: "n." },
+      { en: "argue", cn: "争吵", pos: "v." },
+      { en: "instead", cn: "代替；反而", pos: "adv." },
+      { en: "whatever", cn: "无论什么", pos: "pron." },
+      { en: "nervous", cn: "紧张的", pos: "adj." },
+      { en: "proper", cn: "恰当的；合适的", pos: "adj." },
+      { en: "communicate", cn: "交流；沟通", pos: "v." },
+      { en: "perhaps", cn: "也许；可能", pos: "adv." },
+      { en: "allow", cn: "允许", pos: "v." },
+      { en: "wrong", cn: "错误的；有问题的", pos: "adj." }
+    ]
+  },
+  { // 八下 Unit 5-6
+    name: "八年级下 Unit 5~6",
+    words: [
+      { en: "storm", cn: "暴风雨", pos: "n." },
+      { en: "report", cn: "报道；报告", pos: "v./n." },
+      { en: "strange", cn: "奇怪的", pos: "adj." },
+      { en: "suddenly", cn: "突然地", pos: "adv." },
+      { en: "complete", cn: "完成；完全的", pos: "v./adj." },
+      { en: "shocked", cn: "震惊的", pos: "adj." },
+      { en: "silence", cn: "沉默；寂静", pos: "n." },
+      { en: "recently", cn: "最近", pos: "adv." },
+      { en: "ancient", cn: "古代的", pos: "adj." },
+      { en: "protect", cn: "保护", pos: "v." },
+      { en: "shoot", cn: "射击；拍摄", pos: "v." },
+      { en: "remind", cn: "提醒；使想起", pos: "v." },
+      { en: "bit", cn: "一点；小块", pos: "n." },
+      { en: "silly", cn: "愚蠢的", pos: "adj." },
+      { en: "hide", cn: "隐藏", pos: "v." },
+      { en: "shine", cn: "发光；照耀", pos: "v." },
+      { en: "lead", cn: "带领；导致", pos: "v." },
+      { en: "voice", cn: "声音", pos: "n." },
+      { en: "brave", cn: "勇敢的", pos: "adj." },
+      { en: "magic", cn: "魔法；有魔力的", pos: "n./adj." },
+      { en: "couple", cn: "夫妻；一对", pos: "n." },
+      { en: "smile", cn: "微笑", pos: "v./n." },
+      { en: "marry", cn: "结婚", pos: "v." },
+      { en: "whole", cn: "整个的；全部的", pos: "adj." },
+      { en: "stone", cn: "石头", pos: "n." },
+      { en: "god", cn: "神", pos: "n." },
+      { en: "weak", cn: "虚弱的；弱的", pos: "adj." },
+      { en: "remind", cn: "提醒", pos: "v." },
+      { en: "cheat", cn: "欺骗；作弊", pos: "v." },
+      { en: "western", cn: "西方的", pos: "adj." }
+    ]
+  },
+  { // 八下 Unit 7-8
+    name: "八年级下 Unit 7~8",
+    words: [
+      { en: "square", cn: "平方；正方形；广场", pos: "n." },
+      { en: "meter", cn: "米", pos: "n." },
+      { en: "deep", cn: "深的", pos: "adj." },
+      { en: "desert", cn: "沙漠", pos: "n." },
+      { en: "population", cn: "人口", pos: "n." },
+      { en: "Asia", cn: "亚洲", pos: "n." },
+      { en: "achieve", cn: "达到；实现", pos: "v." },
+      { en: "include", cn: "包括；包含", pos: "v." },
+      { en: "condition", cn: "条件；状况", pos: "n." },
+      { en: "force", cn: "力量；强迫", pos: "n./v." },
+      { en: "nature", cn: "自然", pos: "n." },
+      { en: "ocean", cn: "海洋", pos: "n." },
+      { en: "weigh", cn: "称重；重…", pos: "v." },
+      { en: "birth", cn: "出生", pos: "n." },
+      { en: "adult", cn: "成年人", pos: "n." },
+      { en: "treasure", cn: "宝藏；珍宝", pos: "n." },
+      { en: "island", cn: "岛", pos: "n." },
+      { en: "page", cn: "页", pos: "n." },
+      { en: "hurry", cn: "赶紧；匆忙", pos: "v./n." },
+      { en: "due", cn: "预期的；到期的", pos: "adj." },
+      { en: "tool", cn: "工具", pos: "n." },
+      { en: "mark", cn: "标记；记号", pos: "n./v." },
+      { en: "towards", cn: "朝；向", pos: "prep." },
+      { en: "abroad", cn: "在国外；到国外", pos: "adv." },
+      { en: "belong", cn: "属于", pos: "v." },
+      { en: "record", cn: "记录；唱片", pos: "n./v." },
+      { en: "technology", cn: "科技", pos: "n." },
+      { en: "forever", cn: "永远", pos: "adv." },
+      { en: "modern", cn: "现代的", pos: "adj." },
+      { en: "line", cn: "行；线；排", pos: "n." }
+    ]
+  },
+  { // 八下 Unit 9-10
+    name: "八年级下 Unit 9~10",
+    words: [
+      { en: "museum", cn: "博物馆", pos: "n." },
+      { en: "unbelievable", cn: "难以置信的", pos: "adj." },
+      { en: "progress", cn: "进步；进展", pos: "n." },
+      { en: "rapid", cn: "快速的", pos: "adj." },
+      { en: "unusual", cn: "不寻常的", pos: "adj." },
+      { en: "encourage", cn: "鼓励", pos: "v." },
+      { en: "collect", cn: "收集", pos: "v." },
+      { en: "itself", cn: "它自己", pos: "pron." },
+      { en: "whether", cn: "是否", pos: "conj." },
+      { en: "whenever", cn: "无论何时", pos: "conj." },
+      { en: "fear", cn: "害怕；恐惧", pos: "v./n." },
+      { en: "perfect", cn: "完美的", pos: "adj." },
+      { en: "memory", cn: "记忆；回忆", pos: "n." },
+      { en: "yard", cn: "院子", pos: "n." },
+      { en: "sweet", cn: "甜的；甜蜜的", pos: "adj." },
+      { en: "honest", cn: "诚实的", pos: "adj." },
+      { en: "shame", cn: "羞耻；遗憾", pos: "n." },
+      { en: "century", cn: "世纪；百年", pos: "n." },
+      { en: "hold", cn: "举办；拿着；保持", pos: "v." },
+      { en: "search", cn: "搜索；寻找", pos: "v./n." },
+      { en: "regard", cn: "把…看作", pos: "v." },
+      { en: "consider", cn: "考虑", pos: "v." },
+      { en: "especially", cn: "尤其；特别", pos: "adv." },
+      { en: "count", cn: "数数；计算", pos: "v." },
+      { en: "opposite", cn: "对面的；相反的", pos: "adj./prep." },
+      { en: "among", cn: "在…之中（三者+）", pos: "prep." },
+      { en: "childhood", cn: "童年", pos: "n." },
+      { en: "nowadays", cn: "现今；现在", pos: "adv." },
+      { en: "crayon", cn: "蜡笔", pos: "n." },
+      { en: "scarf", cn: "围巾", pos: "n." }
+    ]
+  },
+  { // 九年级 Unit 1-2
+    name: "九年级 Unit 1~2",
+    words: [
+      { en: "textbook", cn: "教科书；课本", pos: "n." },
+      { en: "conversation", cn: "对话；交谈", pos: "n." },
+      { en: "aloud", cn: "大声地", pos: "adv." },
+      { en: "pronunciation", cn: "发音", pos: "n." },
+      { en: "sentence", cn: "句子", pos: "n." },
+      { en: "expression", cn: "表达；表情", pos: "n." },
+      { en: "discover", cn: "发现", pos: "v." },
+      { en: "secret", cn: "秘密；秘诀", pos: "n./adj." },
+      { en: "repeat", cn: "重复", pos: "v." },
+      { en: "note", cn: "笔记；注意", pos: "n./v." },
+      { en: "physics", cn: "物理", pos: "n." },
+      { en: "chemistry", cn: "化学", pos: "n." },
+      { en: "knowledge", cn: "知识", pos: "n." },
+      { en: "ability", cn: "能力", pos: "n." },
+      { en: "create", cn: "创造", pos: "v." },
+      { en: "active", cn: "积极的；活跃的", pos: "adj." },
+      { en: "wise", cn: "明智的", pos: "adj." },
+      { en: "lantern", cn: "灯笼", pos: "n." },
+      { en: "relative", cn: "亲戚", pos: "n." },
+      { en: "pound", cn: "英镑；磅", pos: "n." },
+      { en: "steal", cn: "偷；窃取", pos: "v." },
+      { en: "lay", cn: "放置；产(卵)", pos: "v." },
+      { en: "admire", cn: "欣赏；钦佩", pos: "v." },
+      { en: "tie", cn: "领带；绑", pos: "n./v." },
+      { en: "treat", cn: "款待；对待", pos: "v." },
+      { en: "warmth", cn: "温暖", pos: "n." },
+      { en: "spread", cn: "传播；展开", pos: "v." },
+      { en: "dead", cn: "死的", pos: "adj." },
+      { en: "punish", cn: "惩罚", pos: "v." },
+      { en: "warn", cn: "警告", pos: "v." }
+    ]
+  },
+  { // 九年级 Unit 3-4
+    name: "九年级 Unit 3~4",
+    words: [
+      { en: "restroom", cn: "洗手间", pos: "n." },
+      { en: "stamp", cn: "邮票", pos: "n." },
+      { en: "beside", cn: "在…旁边", pos: "prep." },
+      { en: "pardon", cn: "原谅；再说一遍", pos: "v./interj." },
+      { en: "rush", cn: "冲；匆忙", pos: "v./n." },
+      { en: "suggest", cn: "建议", pos: "v." },
+      { en: "direction", cn: "方向", pos: "n." },
+      { en: "correct", cn: "正确的", pos: "adj." },
+      { en: "polite", cn: "有礼貌的", pos: "adj." },
+      { en: "direct", cn: "直接的", pos: "adj." },
+      { en: "request", cn: "要求；请求", pos: "n./v." },
+      { en: "address", cn: "地址", pos: "n." },
+      { en: "humorous", cn: "幽默的", pos: "adj." },
+      { en: "silent", cn: "沉默的", pos: "adj." },
+      { en: "helpful", cn: "有帮助的", pos: "adj." },
+      { en: "score", cn: "分数；得分", pos: "n./v." },
+      { en: "background", cn: "背景", pos: "n." },
+      { en: "interview", cn: "采访；面试", pos: "v./n." },
+      { en: "guard", cn: "警卫；守卫", pos: "n./v." },
+      { en: "influence", cn: "影响", pos: "v./n." },
+      { en: "absent", cn: "缺席的", pos: "adj." },
+      { en: "fail", cn: "失败；不及格", pos: "v." },
+      { en: "examination", cn: "考试", pos: "n." },
+      { en: "proud", cn: "自豪的", pos: "adj." },
+      { en: "seldom", cn: "很少", pos: "adv." },
+      { en: "exactly", cn: "确切地", pos: "adv." },
+      { en: "general", cn: "一般的；总的", pos: "adj." },
+      { en: "introduction", cn: "介绍", pos: "n." },
+      { en: "European", cn: "欧洲的；欧洲人", pos: "adj./n." },
+      { en: "African", cn: "非洲的；非洲人", pos: "adj./n." }
+    ]
+  },
+  { // 九年级 Unit 5-6
+    name: "九年级 Unit 5~6",
+    words: [
+      { en: "chopstick", cn: "筷子", pos: "n." },
+      { en: "coin", cn: "硬币", pos: "n." },
+      { en: "fork", cn: "叉子", pos: "n." },
+      { en: "blouse", cn: "女衬衫", pos: "n." },
+      { en: "silver", cn: "银；银色的", pos: "n./adj." },
+      { en: "glass", cn: "玻璃；玻璃杯", pos: "n." },
+      { en: "cotton", cn: "棉花；棉的", pos: "n./adj." },
+      { en: "steel", cn: "钢；钢铁", pos: "n." },
+      { en: "produce", cn: "生产；制造", pos: "v." },
+      { en: "widely", cn: "广泛地", pos: "adv." },
+      { en: "process", cn: "加工；过程", pos: "v./n." },
+      { en: "France", cn: "法国", pos: "n." },
+      { en: "local", cn: "当地的", pos: "adj." },
+      { en: "avoid", cn: "避免", pos: "v." },
+      { en: "product", cn: "产品", pos: "n." },
+      { en: "style", cn: "风格；样式", pos: "n." },
+      { en: "heel", cn: "鞋跟；脚后跟", pos: "n." },
+      { en: "list", cn: "列表；列清单", pos: "n./v." },
+      { en: "mention", cn: "提到；提及", pos: "v." },
+      { en: "nearly", cn: "几乎；差不多", pos: "adv." },
+      { en: "boil", cn: "煮沸；烧开", pos: "v." },
+      { en: "remain", cn: "保持；留下", pos: "v." },
+      { en: "smell", cn: "闻起来；气味", pos: "v./n." },
+      { en: "trade", cn: "贸易；交易", pos: "n./v." },
+      { en: "doubt", cn: "怀疑", pos: "v./n." },
+      { en: "fridge", cn: "冰箱", pos: "n." },
+      { en: "translate", cn: "翻译", pos: "v." },
+      { en: "lock", cn: "锁；锁上", pos: "n./v." },
+      { en: "earthquake", cn: "地震", pos: "n." },
+      { en: "instrument", cn: "乐器；工具", pos: "n." }
+    ]
+  },
+  { // 九年级 Unit 7-8
+    name: "九年级 Unit 7~8",
+    words: [
+      { en: "license", cn: "执照；许可证", pos: "n." },
+      { en: "safety", cn: "安全", pos: "n." },
+      { en: "smoke", cn: "吸烟；烟雾", pos: "v./n." },
+      { en: "pierce", cn: "刺穿；打洞", pos: "v." },
+      { en: "regret", cn: "后悔；遗憾", pos: "v./n." },
+      { en: "educate", cn: "教育", pos: "v." },
+      { en: "manage", cn: "管理；设法做到", pos: "v." },
+      { en: "society", cn: "社会", pos: "n." },
+      { en: "support", cn: "支持", pos: "v./n." },
+      { en: "enter", cn: "进入", pos: "v." },
+      { en: "choice", cn: "选择", pos: "n." },
+      { en: "achieve", cn: "实现；达到", pos: "v." },
+      { en: "truck", cn: "卡车", pos: "n." },
+      { en: "rabbit", cn: "兔子", pos: "n." },
+      { en: "pink", cn: "粉红色的", pos: "adj." },
+      { en: "valuable", cn: "贵重的；有价值的", pos: "adj." },
+      { en: "noise", cn: "噪音", pos: "n." },
+      { en: "policeman", cn: "警察", pos: "n." },
+      { en: "laboratory", cn: "实验室", pos: "n." },
+      { en: "outdoors", cn: "在户外", pos: "adv." },
+      { en: "coat", cn: "外套", pos: "n." },
+      { en: "sleepy", cn: "困的", pos: "adj." },
+      { en: "express", cn: "表达", pos: "v." },
+      { en: "circle", cn: "圆圈；圈子", pos: "n." },
+      { en: "receive", cn: "收到", pos: "v." },
+      { en: "leader", cn: "领导；领袖", pos: "n." },
+      { en: "medical", cn: "医学的；医疗的", pos: "adj." },
+      { en: "prevent", cn: "阻止；预防", pos: "v." },
+      { en: "energy", cn: "能量；精力", pos: "n." },
+      { en: "position", cn: "位置", pos: "n." }
+    ]
+  },
+  { // 九年级 Unit 9-10
+    name: "九年级 Unit 9~10",
+    words: [
+      { en: "prefer", cn: "更喜欢", pos: "v." },
+      { en: "suppose", cn: "认为；假定", pos: "v." },
+      { en: "spare", cn: "空闲的；多余的", pos: "adj." },
+      { en: "director", cn: "导演；负责人", pos: "n." },
+      { en: "smooth", cn: "平滑的；流畅的", pos: "adj." },
+      { en: "stick", cn: "粘贴；坚持；棍", pos: "v./n." },
+      { en: "plenty", cn: "大量；充足", pos: "pron." },
+      { en: "total", cn: "总共的；总计", pos: "adj./n." },
+      { en: "praise", cn: "表扬；赞扬", pos: "v./n." },
+      { en: "wound", cn: "伤口；使受伤", pos: "n./v." },
+      { en: "custom", cn: "风俗；习俗", pos: "n." },
+      { en: "kiss", cn: "亲吻", pos: "v./n." },
+      { en: "greet", cn: "问候；打招呼", pos: "v." },
+      { en: "value", cn: "价值；重视", pos: "n./v." },
+      { en: "capital", cn: "首都", pos: "n." },
+      { en: "passport", cn: "护照", pos: "n." },
+      { en: "chalk", cn: "粉笔", pos: "n." },
+      { en: "blackboard", cn: "黑板", pos: "n." },
+      { en: "coast", cn: "海岸", pos: "n." },
+      { en: "season", cn: "季节", pos: "n." },
+      { en: "knock", cn: "敲；敲击", pos: "v." },
+      { en: "eastern", cn: "东方的", pos: "adj." },
+      { en: "worth", cn: "值得的", pos: "adj." },
+      { en: "manner", cn: "方式；礼貌", pos: "n." },
+      { en: "empty", cn: "空的", pos: "adj." },
+      { en: "basic", cn: "基本的", pos: "adj." },
+      { en: "exchange", cn: "交换；交流", pos: "v./n." },
+      { en: "behave", cn: "表现", pos: "v." },
+      { en: "except", cn: "除…之外", pos: "prep." },
+      { en: "gradually", cn: "逐渐地", pos: "adv." }
+    ]
+  },
+  { // 九年级 Unit 11-12
+    name: "九年级 Unit 11~12",
+    words: [
+      { en: "rather", cn: "相当；宁愿", pos: "adv." },
+      { en: "drive", cn: "驱使；驾驶", pos: "v." },
+      { en: "friendship", cn: "友谊", pos: "n." },
+      { en: "king", cn: "国王", pos: "n." },
+      { en: "power", cn: "权力；力量", pos: "n." },
+      { en: "banker", cn: "银行家", pos: "n." },
+      { en: "pale", cn: "苍白的", pos: "adj." },
+      { en: "queen", cn: "王后；女王", pos: "n." },
+      { en: "examine", cn: "检查", pos: "v." },
+      { en: "weight", cn: "重量", pos: "n." },
+      { en: "courage", cn: "勇气", pos: "n." },
+      { en: "rather than", cn: "而不是", pos: "phr." },
+      { en: "pull together", cn: "齐心协力", pos: "phr." },
+      { en: "relief", cn: "轻松；解脱", pos: "n." },
+      { en: "disappoint", cn: "使失望", pos: "v." },
+      { en: "unexpected", cn: "出乎意料的", pos: "adj." },
+      { en: "backpack", cn: "背包", pos: "n." },
+      { en: "oversleep", cn: "睡过头", pos: "v." },
+      { en: "burn", cn: "燃烧；烧伤", pos: "v." },
+      { en: "alive", cn: "活着的", pos: "adj." },
+      { en: "airport", cn: "机场", pos: "n." },
+      { en: "till", cn: "直到", pos: "prep./conj." },
+      { en: "cream", cn: "奶油", pos: "n." },
+      { en: "fool", cn: "傻瓜；愚弄", pos: "n./v." },
+      { en: "embarrassed", cn: "尴尬的", pos: "adj." },
+      { en: "announce", cn: "宣布", pos: "v." },
+      { en: "discovery", cn: "发现", pos: "n." },
+      { en: "cancel", cn: "取消", pos: "v." },
+      { en: "disappear", cn: "消失", pos: "v." },
+      { en: "officer", cn: "军官；官员", pos: "n." }
+    ]
+  },
+  { // 九年级 Unit 13-14
+    name: "九年级 Unit 13~14",
+    words: [
+      { en: "litter", cn: "乱扔；垃圾", pos: "v./n." },
+      { en: "fisherman", cn: "渔民", pos: "n." },
+      { en: "coal", cn: "煤", pos: "n." },
+      { en: "ugly", cn: "丑陋的", pos: "adj." },
+      { en: "advantage", cn: "优势", pos: "n." },
+      { en: "industry", cn: "工业；行业", pos: "n." },
+      { en: "law", cn: "法律", pos: "n." },
+      { en: "afford", cn: "负担得起", pos: "v." },
+      { en: "recycle", cn: "回收利用", pos: "v." },
+      { en: "method", cn: "方法", pos: "n." },
+      { en: "inspire", cn: "激励；鼓舞", pos: "v." },
+      { en: "survey", cn: "调查", pos: "n." },
+      { en: "standard", cn: "标准", pos: "n." },
+      { en: "row", cn: "一排；划船", pos: "n./v." },
+      { en: "keyboard", cn: "键盘", pos: "n." },
+      { en: "method", cn: "方法", pos: "n." },
+      { en: "instruction", cn: "说明；指令", pos: "n." },
+      { en: "double", cn: "两倍的；翻倍", pos: "adj./v." },
+      { en: "overcome", cn: "克服", pos: "v." },
+      { en: "caring", cn: "关心他人的", pos: "adj." },
+      { en: "senior", cn: "高年级的；年长的", pos: "adj." },
+      { en: "responsible", cn: "负责的", pos: "adj." },
+      { en: "separate", cn: "分开；分离的", pos: "v./adj." },
+      { en: "task", cn: "任务", pos: "n." },
+      { en: "ahead", cn: "在前面", pos: "adv." },
+      { en: "graduate", cn: "毕业", pos: "v." },
+      { en: "thankful", cn: "感激的", pos: "adj." },
+      { en: "level", cn: "水平", pos: "n." },
+      { en: "degree", cn: "学位；度", pos: "n." },
+      { en: "congratulate", cn: "祝贺", pos: "v." }
+    ]
+  }
+];
+
+const grammarTopics = [
+  {
+    name: "一般现在时 & be动词 (七上)",
+    notes: `<p><strong>be动词：</strong>am / is / are</p><p>I <strong>am</strong> a student. / He <strong>is</strong> tall. / They <strong>are</strong> happy.</p>
+<p><strong>一般现在时：</strong>表示经常性动作、习惯、客观事实</p>
+<p><strong>结构：</strong>主语 + 动词原形（三单 + s/es）</p>
+<p><strong>标志词：</strong>always, usually, often, sometimes, never, every day</p>
+<p><strong>三单变化：</strong>一般+s, 以s/x/sh/ch/o结尾+es, 辅音+y→ies</p>
+<p><strong>例句：</strong>She <strong>goes</strong> to school at 7:00 every morning.</p>`,
+    questions: [
+      { q: "I ___ from China.", opts: ["am", "is", "are", "be"], ans: 0 },
+      { q: "She ___ to school by bus every day.", opts: ["go", "goes", "going", "went"], ans: 1 },
+      { q: "Tom and Jerry ___ good friends.", opts: ["is", "am", "are", "be"], ans: 2 },
+      { q: "The earth ___ around the sun.", opts: ["move", "moves", "moved", "moving"], ans: 1 },
+      { q: "My father ___ TV after dinner.", opts: ["watch", "watches", "watched", "watching"], ans: 1 }
+    ]
+  },
+  {
+    name: "人称代词和物主代词 (七上-七下)",
+    notes: `<p><strong>人称代词主格：</strong>I, you, he, she, it, we, they（作主语）</p>
+<p><strong>人称代词宾格：</strong>me, you, him, her, it, us, them（作宾语）</p>
+<p><strong>形容词性物主代词：</strong>my, your, his, her, its, our, their（后接名词）</p>
+<p><strong>名词性物主代词：</strong>mine, yours, his, hers, its, ours, theirs（独立使用）</p>
+<p><strong>例句：</strong>This is <strong>my</strong> book. = This book is <strong>mine</strong>.</p>`,
+    questions: [
+      { q: "___ is a teacher. ___ name is Wang Li.", opts: ["She; Her", "Her; She", "She; She", "Her; Her"], ans: 0 },
+      { q: "Please give ___ the book.", opts: ["I", "my", "me", "mine"], ans: 2 },
+      { q: "This is not ___ bag. ___ is over there.", opts: ["my; My", "mine; My", "my; Mine", "I; My"], ans: 2 },
+      { q: "___ are students. ___ classroom is big.", opts: ["We; Our", "Us; Our", "We; Ours", "Our; We"], ans: 0 },
+      { q: "Could you help ___ with ___ English?", opts: ["me; my", "I; my", "my; me", "mine; I"], ans: 0 }
+    ]
+  },
+  {
+    name: "现在进行时 (七下 Unit 6)",
+    notes: `<p><strong>结构：</strong>be (am/is/are) + 动词-ing</p>
+<p><strong>用法：</strong>表示说话时正在进行的动作</p>
+<p><strong>标志词：</strong>now, right now, at the moment, Look!, Listen!</p>
+<p><strong>动词-ing变化：</strong></p><ul>
+<li>一般直接+ing：play→playing, read→reading</li>
+<li>以不发音e结尾去e+ing：make→making, write→writing</li>
+<li>重读闭音节双写尾字母：run→running, swim→swimming</li></ul>
+<p><strong>例句：</strong>She <strong>is reading</strong> a book now. / Look! They <strong>are dancing</strong>.</p>`,
+    questions: [
+      { q: "Listen! Someone ___ in the next room.", opts: ["sing", "is singing", "sang", "sings"], ans: 1 },
+      { q: "My mother ___ dinner right now.", opts: ["cook", "cooks", "is cooking", "cooked"], ans: 2 },
+      { q: "Look! The children ___ football on the playground.", opts: ["play", "played", "are playing", "plays"], ans: 2 },
+      { q: "Don't make noise. The baby ___.", opts: ["sleep", "sleeps", "slept", "is sleeping"], ans: 3 },
+      { q: "He ___ a letter at the moment.", opts: ["writes", "is writing", "write", "wrote"], ans: 1 }
+    ]
+  },
+  {
+    name: "一般过去时 (七下 Unit 11-12)",
+    notes: `<p><strong>结构：</strong>主语 + 动词过去式</p>
+<p><strong>标志词：</strong>yesterday, last night/week/year, ago, in 2020, just now</p>
+<p><strong>规则变化：</strong></p><ul>
+<li>一般+ed：work→worked</li>
+<li>以e结尾+d：live→lived</li>
+<li>辅音+y→ied：study→studied</li>
+<li>重读闭音节双写：stop→stopped</li></ul>
+<p><strong>常见不规则动词：</strong>go→went, eat→ate, see→saw, have→had, do→did, come→came, get→got, take→took, say→said, make→made</p>`,
+    questions: [
+      { q: "I ___ a great movie last night.", opts: ["see", "saw", "seen", "seeing"], ans: 1 },
+      { q: "She ___ her homework an hour ago.", opts: ["finish", "finishes", "finished", "finishing"], ans: 2 },
+      { q: "They ___ to Beijing last summer.", opts: ["go", "went", "gone", "going"], ans: 1 },
+      { q: "He ___ born in 2010.", opts: ["is", "was", "were", "are"], ans: 1 },
+      { q: "We ___ swimming yesterday afternoon.", opts: ["go", "went", "gone", "going"], ans: 1 }
+    ]
+  },
+  {
+    name: "形容词比较级和最高级 (八上 U3-4)",
+    notes: `<p><strong>比较级：</strong>两者比较，后用than。<strong>最高级：</strong>三者及以上，前加the。</p>
+<p><strong>变化规则：</strong></p><ul>
+<li>单音节：-er/-est（tall→taller→tallest）</li>
+<li>以e结尾：-r/-st（nice→nicer→nicest）</li>
+<li>辅音+y→ier/iest（happy→happier→happiest）</li>
+<li>重读闭音节双写：big→bigger→biggest</li>
+<li>多音节：more/most+原级（beautiful→more beautiful→most beautiful）</li>
+<li><strong>不规则：</strong>good/well→better→best, bad/badly→worse→worst, many/much→more→most, little→less→least, far→farther/further→farthest/furthest</li></ul>
+<p>as + 原级 + as：和…一样 / not as/so + 原级 + as：不如…</p>`,
+    questions: [
+      { q: "Tom is ___ than his brother.", opts: ["tall", "taller", "tallest", "the tallest"], ans: 1 },
+      { q: "This is ___ book I have ever read.", opts: ["good", "better", "best", "the best"], ans: 3 },
+      { q: "Shanghai is larger than ___ city in Hunan.", opts: ["any", "any other", "other", "the other"], ans: 0 },
+      { q: "The weather today is much ___ than yesterday.", opts: ["cold", "colder", "coldest", "the coldest"], ans: 1 },
+      { q: "She runs as ___ as her sister.", opts: ["fast", "faster", "fastest", "more fast"], ans: 0 }
+    ]
+  },
+  {
+    name: "一般将来时 (八上 Unit 6-7)",
+    notes: `<p><strong>will + 动词原形：</strong>将要发生的动作（非计划好的）</p>
+<p><strong>be going to + 动词原形：</strong>计划/打算做某事，或根据迹象判断</p>
+<p><strong>否定：</strong>will not = won't / be not going to</p>
+<p><strong>标志词：</strong>tomorrow, next week/year, in the future, soon, in+时间段</p>
+<p><strong>例句：</strong>I <strong>will call</strong> you tomorrow. / She <strong>is going to be</strong> a doctor.</p>
+<p><strong>注意：</strong>there be的一般将来时→there will be / there is going to be</p>`,
+    questions: [
+      { q: "I ___ you tomorrow morning.", opts: ["call", "will call", "calls", "called"], ans: 1 },
+      { q: "There ___ a football match next Friday.", opts: ["is", "was", "will be", "has"], ans: 2 },
+      { q: "She ___ going to buy a new dress.", opts: ["am", "is", "are", "be"], ans: 1 },
+      { q: "___ you help me with my English?", opts: ["Do", "Are", "Will", "Have"], ans: 2 },
+      { q: "We ___ a picnic if the weather is fine.", opts: ["have", "had", "will have", "having"], ans: 2 }
+    ]
+  },
+  {
+    name: "情态动词 (七下~八上)",
+    notes: `<table><tr><th>情态动词</th><th>用法</th><th>例句</th></tr>
+<tr><td>can/could</td><td>能力/许可/请求</td><td>I can swim./Could you help me?</td></tr>
+<tr><td>must</td><td>必须（主观）</td><td>You must finish homework first.</td></tr>
+<tr><td>have to</td><td>不得不（客观）</td><td>I have to get up early.</td></tr>
+<tr><td>should</td><td>应该（建议）</td><td>You should study harder.</td></tr>
+<tr><td>may</td><td>可能/许可</td><td>May I come in?/It may rain.</td></tr>
+<tr><td>need</td><td>需要</td><td>You needn't worry.</td></tr></table>
+<p><strong>特点：</strong>情态动词后+动词原形；mustn't（禁止）≠ needn't（不必）</p>`,
+    questions: [
+      { q: "You ___ smoke here. It's not allowed.", opts: ["needn't", "mustn't", "can't", "shouldn't"], ans: 1 },
+      { q: "___ I borrow your pen, please?", opts: ["Must", "Should", "May", "Need"], ans: 2 },
+      { q: "You ___ stay up too late. It's bad for your health.", opts: ["needn't", "may not", "shouldn't", "mustn't"], ans: 2 },
+      { q: "She ___ swim when she was five years old.", opts: ["can", "could", "may", "must"], ans: 1 },
+      { q: "We ___ worry about him. He can take care of himself.", opts: ["mustn't", "can't", "needn't", "may not"], ans: 2 }
+    ]
+  },
+  {
+    name: "条件状语从句 (八上 Unit 10)",
+    notes: `<p><strong>if 引导的条件句：</strong>如果…就…</p>
+<p><strong>主将从现：</strong>if从句用一般现在时，主句用一般将来时</p>
+<p style="color:#e53e3e;"><strong>考点：</strong>If it <strong>rains</strong> tomorrow, I <strong>won't go</strong> out.（从句用一般现在时表将来！）</p>
+<p><strong>unless = if...not：</strong>除非</p>
+<p><strong>例句：</strong>If you <strong>work</strong> hard, you <strong>will succeed</strong>.</p>
+<p>If he <strong>comes</strong> back, please <strong>tell</strong> me.（主句祈使句也用一般现在时从句）</p>`,
+    questions: [
+      { q: "If it ___ tomorrow, we won't go to the park.", opts: ["rains", "will rain", "rained", "raining"], ans: 0 },
+      { q: "I ___ you if I get there on time.", opts: ["call", "will call", "called", "calls"], ans: 1 },
+      { q: "If you ___ to the party, you'll have a great time.", opts: ["go", "will go", "went", "going"], ans: 0 },
+      { q: "You won't pass the exam ___ you study hard.", opts: ["if", "when", "unless", "because"], ans: 2 },
+      { q: "Please call me if he ___ back.", opts: ["come", "will come", "comes", "came"], ans: 2 }
+    ]
+  },
+  {
+    name: "现在完成时 (八下 Unit 8-10)",
+    notes: `<p><strong>结构：</strong>have/has + 过去分词</p>
+<p><strong>用法：</strong></p><ul>
+<li>①过去动作对现在的影响：I <strong>have lost</strong> my key.（钥匙找不到了）</li>
+<li>②从过去持续到现在：He <strong>has lived</strong> here for 10 years.</li>
+<li>③经历：I <strong>have been</strong> to Beijing twice.</li></ul>
+<p><strong>标志词：</strong>already, yet, ever, never, just, since（+时间点）, for（+时间段）, so far, in the past few years</p>
+<p><strong>have been to</strong>（去过已回）vs <strong>have gone to</strong>（去了未回）</p>
+<p>短暂性动词（die, buy, borrow等）不能与for/since连用</p>`,
+    questions: [
+      { q: "I ___ my homework already.", opts: ["finish", "finished", "have finished", "finishing"], ans: 2 },
+      { q: "She ___ to Shanghai twice.", opts: ["go", "goes", "went", "has been"], ans: 3 },
+      { q: "We ___ each other since 2020.", opts: ["know", "knew", "have known", "knowing"], ans: 2 },
+      { q: "He ___ the book yet.", opts: ["hasn't read", "didn't read", "doesn't read", "isn't reading"], ans: 0 },
+      { q: "My grandfather ___ for 10 years.", opts: ["died", "has died", "has been dead", "is dying"], ans: 2 }
+    ]
+  },
+  {
+    name: "过去进行时 (八下 Unit 5)",
+    notes: `<p><strong>结构：</strong>was/were + 动词-ing</p>
+<p><strong>用法：</strong>过去某个时刻正在进行的动作</p>
+<p><strong>标志词：</strong>at that time, at 8 o'clock yesterday, when（从句用一般过去时）</p>
+<p><strong>when vs while：</strong></p><ul>
+<li>when + 短暂动作（一般过去时）：I was reading when he <strong>came</strong> in.</li>
+<li>while + 延续动作（过去进行时）：While I <strong>was reading</strong>, he came in.</li></ul>
+<p><strong>例句：</strong>I <strong>was doing</strong> my homework at 8 PM yesterday.</p>`,
+    questions: [
+      { q: "I ___ TV at 8 o'clock yesterday evening.", opts: ["watch", "watched", "was watching", "have watched"], ans: 2 },
+      { q: "What ___ you ___ when I called you?", opts: ["did; do", "were; doing", "are; doing", "was; doing"], ans: 1 },
+      { q: "While she ___, her mother came back.", opts: ["cooked", "was cooking", "cooks", "has cooked"], ans: 1 },
+      { q: "They ___ football when it began to rain.", opts: ["play", "played", "were playing", "are playing"], ans: 2 },
+      { q: "He ___ when the accident happened.", opts: ["drove", "was driving", "drives", "has driven"], ans: 1 }
+    ]
+  },
+  {
+    name: "宾语从句 (九年级 Unit 2-3)",
+    notes: `<p><strong>结构：</strong>主句 + 连接词 + 从句（<span style="color:#e53e3e;">从句用陈述语序！</span>）</p>
+<p><strong>连接词：</strong></p><ul>
+<li>that：陈述句→I think (that) he is right.</li>
+<li>if/whether：一般疑问句→I don't know if he will come.</li>
+<li>wh-词：特殊疑问句→Can you tell me where he lives?</li></ul>
+<p><strong>时态呼应：</strong>主句现在时→从句任何时态；主句过去时→从句过去时（真理除外）</p>
+<p><strong>语序陷阱：</strong>❌Can you tell me where <strong>does he live</strong>? ✅Can you tell me where <strong>he lives</strong>?</p>`,
+    questions: [
+      { q: "I don't know ___ he will come tomorrow.", opts: ["that", "if", "what", "which"], ans: 1 },
+      { q: "Can you tell me ___?", opts: ["where does he live", "where he lives", "where he live", "where did he live"], ans: 1 },
+      { q: "She said ___ she was feeling much better.", opts: ["if", "whether", "that", "what"], ans: 2 },
+      { q: "I wonder ___ he can finish the work on time.", opts: ["that", "what", "whether", "which"], ans: 2 },
+      { q: "Do you know ___?", opts: ["what time does the train leave", "what time the train leaves", "what time the train leave", "the train leaves what time"], ans: 1 }
+    ]
+  },
+  {
+    name: "被动语态 (九年级 Unit 5-7)",
+    notes: `<p><strong>结构：</strong>be + 过去分词（by + 动作执行者）</p>
+<p><strong>各时态被动语态：</strong></p><ul>
+<li>一般现在时：am/is/are + done：English <strong>is spoken</strong> worldwide.</li>
+<li>一般过去时：was/were + done：The bike <strong>was bought</strong> last year.</li>
+<li>一般将来时：will be + done：The work <strong>will be finished</strong> soon.</li>
+<li>情态动词：can/must/should + be + done</li></ul>
+<p><strong>主动变被动三步：</strong>①宾语变主语 ②动词变be+done ③主语变by宾语</p>`,
+    questions: [
+      { q: "English ___ all over the world.", opts: ["speaks", "is spoken", "spoke", "speaking"], ans: 1 },
+      { q: "The bridge ___ in 2010.", opts: ["built", "was built", "is built", "builds"], ans: 1 },
+      { q: "The classroom ___ every day.", opts: ["cleans", "cleaned", "is cleaned", "was cleaned"], ans: 2 },
+      { q: "Teenagers should ___ to choose their own clothes.", opts: ["allow", "allowed", "be allowed", "are allowed"], ans: 2 },
+      { q: "These books ___ well.", opts: ["sell", "sold", "are sold", "were sold"], ans: 0 }
+    ]
+  },
+  {
+    name: "定语从句 (九年级 Unit 9)",
+    notes: `<p><strong>定语从句：</strong>修饰名词或代词的句子</p>
+<p><strong>关系代词：</strong></p><ul>
+<li>who/that：指人→I like musicians <strong>who/that</strong> play different kinds of music.</li>
+<li>which/that：指物→I like music <strong>which/that</strong> I can dance to.</li>
+<li>whose：表所属（…的）</li></ul>
+<p><strong>关系代词可省略的情况：</strong>关系代词在从句中作宾语时可省略</p>
+<p><strong>例句：</strong>The man <strong>who</strong> is standing there is my teacher.</p>`,
+    questions: [
+      { q: "I like music ___ I can sing along with.", opts: ["who", "that", "what", "when"], ans: 1 },
+      { q: "The girl ___ is wearing a red dress is my sister.", opts: ["which", "who", "what", "whose"], ans: 1 },
+      { q: "This is the best movie ___ I have ever seen.", opts: ["which", "who", "that", "what"], ans: 2 },
+      { q: "Do you know the boy ___ mother is a doctor?", opts: ["who", "whom", "whose", "which"], ans: 2 },
+      { q: "The house ___ we live in is very old.", opts: ["who", "what", "which", "where"], ans: 2 }
+    ]
+  }
+];
+// ==================== 状态 ====================
+let vocabState = { unitIdx: 0, current: 0, score: 0, total: 0, words: [], mode: '' };
+let grammarState = { topicIdx: 0, current: 0, score: 0, total: 0, questions: [] };
+let wrongBook = JSON.parse(localStorage.getItem('eng_wrong_book') || '[]');
+let dailyTasks = JSON.parse(localStorage.getItem('eng_daily_tasks') || '{}');
+let streak = JSON.parse(localStorage.getItem('eng_streak') || '{"count":0,"date":""}');
+
+// ==================== 面板切换 ====================
+function switchPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'daily') initDaily();
+  if (id === 'wrong') renderWrongBook();
+}
+
+// ==================== 词汇 ====================
+function loadVocabUnit() {
+  vocabState.unitIdx = parseInt(document.getElementById('unitSelect').value);
+  vocabState.current = 0; vocabState.score = 0; vocabState.total = 0;
+  document.getElementById('vocabQuizArea').innerHTML = '<p style="color:#a0aec0;text-align:center;padding:40px 0;">已选择单元，点击"开始测验"或"查看单词表"</p>';
+  document.getElementById('vocabProgress').style.width = '0%';
+  document.getElementById('vocabResult').innerHTML = '';
+}
+
+function showVocabList() {
+  const idx = parseInt(document.getElementById('unitSelect').value);
+  const unit = vocabUnits[idx];
+  let html = '<h3>' + unit.name + ' — 单词表（点击单词查看详情）</h3><table><tr><th>#</th><th>英文</th><th>中文</th><th>词性</th></tr>';
+  unit.words.forEach((w, i) => {
+    html += `<tr><td>${i+1}</td><td><span class="vocab-word" onclick="showWordDetail(${idx},${i})">${w.en}</span></td><td>${w.cn}</td><td>${w.pos}</td></tr>`;
+  });
+  html += '</table>';
+  document.getElementById('vocabQuizArea').innerHTML = html;
+  document.getElementById('vocabProgress').style.width = '0%';
+  document.getElementById('vocabResult').innerHTML = '';
+}
+
+function startVocabQuiz() {
+  const idx = parseInt(document.getElementById('unitSelect').value);
+  const words = [...vocabUnits[idx].words];
+  words.sort(() => Math.random() - 0.5);
+  vocabState = { ...vocabState, current: 0, score: 0, total: words.length, words: words, unitIdx: idx, mode: 'quiz' };
+  renderVocabQuestion();
+}
+
+function renderVocabQuestion() {
+  const s = vocabState;
+  if (s.current >= s.total) {
+    document.getElementById('vocabQuizArea').innerHTML = '';
+    document.getElementById('vocabProgress').style.width = '100%';
+    const pct = Math.round(s.score / s.total * 100);
+    let msg = pct >= 80 ? '太棒了！单词掌握得很好！' : pct >= 60 ? '不错，继续加油！' : '还需要多复习哦，每天坚持背单词！';
+    document.getElementById('vocabResult').innerHTML = `<p class="score">得分：${s.score}/${s.total}（${pct}%）</p><p>${msg}</p><button class="btn btn-primary" onclick="startVocabQuiz()">再来一次</button>`;
+    return;
+  }
+  document.getElementById('vocabProgress').style.width = (s.current / s.total * 100) + '%';
+  const w = s.words[s.current];
+  const quizType = Math.random() > 0.5 ? 'encn' : 'cnen';
+  let html = `<div class="quiz-box"><p class="question">第 ${s.current+1}/${s.total} 题`;
+  if (quizType === 'encn') {
+    html += ` — 请选择 "<strong>${w.en}</strong>" 的中文意思：</p><div class="options">`;
+    const choices = generateChoices(w, 'cn');
+    choices.forEach(c => { html += `<div class="option" onclick="checkVocab(this,'${quizType}','${c}')">${c}</div>`; });
+  } else {
+    html += ` — 请选择 "<strong>${w.cn}</strong>" 对应的英文：</p><div class="options">`;
+    const choices = generateChoices(w, 'en');
+    choices.forEach(c => { html += `<div class="option" onclick="checkVocab(this,'${quizType}','${c}')">${c}</div>`; });
+  }
+  html += '</div></div>';
+  document.getElementById('vocabQuizArea').innerHTML = html;
+}
+
+function generateChoices(word, field) {
+  const unit = vocabUnits[vocabState.unitIdx];
+  const others = unit.words.filter(w => w.en !== word.en);
+  const shuffled = others.sort(() => Math.random() - 0.5).slice(0, 3);
+  const choices = [word[field], ...shuffled.map(w => w[field])];
+  return choices.sort(() => Math.random() - 0.5);
+}
+
+function checkVocab(el, type, value) {
+  const s = vocabState;
+  const w = s.words[s.current];
+  const correct = type === 'encn' ? w.cn : w.en;
+  const isCorrect = value === correct;
+
+  const allOpts = el.parentElement.querySelectorAll('.option');
+  allOpts.forEach(o => {
+    o.style.pointerEvents = 'none';
+    if ((type === 'encn' && o.textContent === w.cn) || (type === 'cnen' && o.textContent === w.en)) {
+      o.classList.add('correct');
+    }
+  });
+  if (!isCorrect) {
+    el.classList.add('wrong');
+    addToWrongBook({ type: 'vocab', unit: vocabUnits[s.unitIdx].name, word: w.en, answer: correct, userAnswer: value, question: `"${type==='encn'?w.en:w.cn}" 的意思` });
+  } else {
+    s.score++;
+  }
+  if (!isCorrect) { allOpts.forEach(o => { if (!o.classList.contains('correct') && !o.classList.contains('wrong')) o.classList.add('dim'); }); }
+  s.total = s.total; // keep total
+
+  setTimeout(() => {
+    s.current++;
+    renderVocabQuestion();
+  }, isCorrect ? 600 : 1500);
+}
+
+function showWordDetail(unitIdx, wordIdx) {
+  const w = vocabUnits[unitIdx].words[wordIdx];
+  document.getElementById('wordDetail').innerHTML = `
+    <h3>${w.en}</h3>
+    <p><strong>中文：</strong>${w.cn}</p>
+    <p><strong>词性：</strong>${w.pos}</p>
+    <p style="margin-top:8px;color:#a0aec0;">💡 建议：把这个单词写在便利贴上，贴在床头或书桌上，每天看几眼。</p>
+  `;
+  document.getElementById('wordModal').classList.add('show');
+}
+
+function closeModal() { document.getElementById('wordModal').classList.remove('show'); }
+
+// ==================== 语法 ====================
+function loadGrammarTopic() {
+  grammarState.topicIdx = parseInt(document.getElementById('grammarTopic').value);
+  grammarState.current = 0; grammarState.score = 0; grammarState.total = 0;
+  document.getElementById('grammarQuizArea').innerHTML = '<p style="color:#a0aec0;text-align:center;padding:40px 0;">已选择语法点，点击"开始练习"或"查看语法笔记"</p>';
+  document.getElementById('grammarProgress').style.width = '0%';
+  document.getElementById('grammarResult').innerHTML = '';
+}
+
+function showGrammarNotes() {
+  const idx = parseInt(document.getElementById('grammarTopic').value);
+  const topic = grammarTopics[idx];
+  document.getElementById('grammarQuizArea').innerHTML = `<h3>${topic.name} — 语法笔记</h3><div class="card">${topic.notes}</div>`;
+  document.getElementById('grammarProgress').style.width = '0%';
+  document.getElementById('grammarResult').innerHTML = '';
+}
+
+function startGrammarQuiz() {
+  const idx = parseInt(document.getElementById('grammarTopic').value);
+  const questions = [...grammarTopics[idx].questions];
+  questions.sort(() => Math.random() - 0.5);
+  grammarState = { ...grammarState, current: 0, score: 0, total: questions.length, questions: questions, topicIdx: idx };
+  renderGrammarQuestion();
+}
+
+function renderGrammarQuestion() {
+  const s = grammarState;
+  if (s.current >= s.total) {
+    document.getElementById('grammarQuizArea').innerHTML = '';
+    document.getElementById('grammarProgress').style.width = '100%';
+    const pct = Math.round(s.score / s.total * 100);
+    let msg = pct >= 80 ? '语法掌握得很好！' : pct >= 60 ? '还需加强练习，建议再看看语法笔记。' : '这个语法点需要重新学习，仔细阅读语法笔记后再试一次。';
+    document.getElementById('grammarResult').innerHTML = `<p class="score">得分：${s.score}/${s.total}（${pct}%）</p><p>${msg}</p><button class="btn btn-primary" onclick="startGrammarQuiz()">再来一次</button>`;
+    return;
+  }
+  document.getElementById('grammarProgress').style.width = (s.current / s.total * 100) + '%';
+  const q = s.questions[s.current];
+  let html = `<div class="quiz-box"><p class="question">第 ${s.current+1}/${s.total} 题：${q.q}</p><div class="options">`;
+  q.opts.forEach((o, i) => { html += `<div class="option" onclick="checkGrammar(this,${i})">${String.fromCharCode(65+i)}. ${o}</div>`; });
+  html += '</div></div>';
+  document.getElementById('grammarQuizArea').innerHTML = html;
+}
+
+function checkGrammar(el, chosen) {
+  const s = grammarState;
+  const q = s.questions[s.current];
+  const isCorrect = chosen === q.ans;
+
+  const allOpts = el.parentElement.querySelectorAll('.option');
+  allOpts.forEach((o, i) => {
+    o.style.pointerEvents = 'none';
+    if (i === q.ans) o.classList.add('correct');
+  });
+  if (!isCorrect) {
+    el.classList.add('wrong');
+    addToWrongBook({ type: 'grammar', topic: grammarTopics[s.topicIdx].name, question: q.q, answer: q.opts[q.ans], userAnswer: q.opts[chosen] });
+  } else {
+    s.score++;
+  }
+  if (!isCorrect) { allOpts.forEach(o => { if (!o.classList.contains('correct') && !o.classList.contains('wrong')) o.classList.add('dim'); }); }
+
+  setTimeout(() => {
+    s.current++;
+    renderGrammarQuestion();
+  }, isCorrect ? 600 : 2000);
+}
+
+// ==================== 错题本 ====================
+function addToWrongBook(entry) {
+  wrongBook.push({ ...entry, time: new Date().toLocaleString() });
+  localStorage.setItem('eng_wrong_book', JSON.stringify(wrongBook));
+  updateWrongCount();
+}
+
+function renderWrongBook() {
+  if (wrongBook.length === 0) {
+    document.getElementById('wrongList').innerHTML = '<p style="color:#a0aec0;text-align:center;padding:30px 0;">错题本还是空的，做错的题目会自动收集到这里</p>';
+    return;
+  }
+  let html = '';
+  wrongBook.forEach((w, i) => {
+    html += `<div class="card"><h4>错题 #${i+1} <span style="font-weight:400;font-size:.85em;color:#a0aec0;">${w.time}</span></h4>`;
+    if (w.type === 'vocab') {
+      html += `<p>单元：${w.unit} | 题目：${w.question}</p><p>你的答案：<span style="color:#e53e3e">${w.userAnswer}</span> → 正确答案：<span style="color:#48bb78">${w.answer}</span></p>`;
+    } else {
+      html += `<p>语法点：${w.topic}</p><p>题目：${w.question}</p><p>你的答案：<span style="color:#e53e3e">${w.userAnswer}</span> → 正确答案：<span style="color:#48bb78">${w.answer}</span></p>`;
+    }
+    html += '</div>';
+  });
+  document.getElementById('wrongList').innerHTML = html;
+}
+
+function clearWrongBook() {
+  if (confirm('确定要清空错题本吗？')) {
+    wrongBook = [];
+    localStorage.setItem('eng_wrong_book', '[]');
+    renderWrongBook();
+    updateWrongCount();
+  }
+}
+
+function updateWrongCount() {
+  document.getElementById('wrongCount').textContent = '(' + wrongBook.length + ')';
+}
+
+// ==================== 每日任务 ====================
+function initDaily() {
+  const today = new Date().toLocaleDateString();
+  document.getElementById('todayDate').textContent = today;
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById('t' + i).checked = !!dailyTasks['t' + i];
+  }
+  // 根据星期几给特殊任务
+  const day = new Date().getDay();
+  const specials = [
+    '周日：整理本周错题，做一次完整复习', '周一：重点背新单词20个', '周二：做2篇阅读理解',
+    '周三：练习写作 — 写一篇60词短文', '周四：复习本周语法笔记', '周五：听力练习15分钟',
+    '周六：做一套模拟卷（计时60分钟）'
+  ];
+  document.getElementById('specialTask').textContent = specials[day];
+  updateStreak();
+}
+
+function saveTasks() {
+  for (let i = 1; i <= 6; i++) {
+    dailyTasks['t' + i] = document.getElementById('t' + i).checked;
+  }
+  localStorage.setItem('eng_daily_tasks', JSON.stringify(dailyTasks));
+  updateStreak();
+}
+
+function updateStreak() {
+  const today = new Date().toLocaleDateString();
+  const allDone = Array.from({length:6}, (_,i) => document.getElementById('t'+(i+1)).checked).every(Boolean);
+  if (allDone && streak.date !== today) {
+    streak.count = streak.date === new Date(new Date().getTime() - 86400000).toLocaleDateString() ? streak.count + 1 : 1;
+    streak.date = today;
+    localStorage.setItem('eng_streak', JSON.stringify(streak));
+  }
+  const streakEl = document.getElementById('streakInfo');
+  if (!streakEl) {
+    const el = document.createElement('div');
+    el.id = 'streakInfo';
+    el.className = 'tips';
+    el.style.marginTop = '12px';
+    document.getElementById('daily').appendChild(el);
+  }
+  document.getElementById('streakInfo').innerHTML = '连续打卡 <strong>' + streak.count + '</strong> 天！坚持就是胜利！';
+}
+
+// ==================== 初始化 ====================
+function init() {
+  updateWrongCount();
+  renderWrongBook();
+  document.getElementById('grammarQuizArea').innerHTML = '<p style="color:#a0aec0;text-align:center;padding:40px 0;">选择一个语法点，点击"开始练习"或"查看语法笔记"</p>';
+}
+
+init();
+</script>
+</body>
+</html>
